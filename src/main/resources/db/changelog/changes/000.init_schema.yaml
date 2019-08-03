@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_routes_table
+      author: Oleksii Mutianov
+      changes:
+        - createTable:
+            tableName: routes
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: departure_city
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: arrival_city
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: create_payment_requests_table
+      author: Oleksii Mutianov
+      changes:
+        - createTable:
+            tableName: payment_requests
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: route_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: route_id_fk
+                    references: routes(id)
+              - column:
+                  name: departure_time
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: payment_status
+                  type: varchar(255)
