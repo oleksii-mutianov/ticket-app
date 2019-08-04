@@ -1,7 +1,7 @@
 package ua.alxmute.service.impl;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -15,14 +15,11 @@ import java.util.List;
 
 @Service
 @Slf4j
+@AllArgsConstructor
 public class PaymentRequestClientServiceImpl implements PaymentRequestClientService {
 
     private static final String API_BASE_URL = "http://localhost:8080/ticket-app/api/v1";
     private RestTemplate restTemplate;
-
-    public PaymentRequestClientServiceImpl(RestTemplateBuilder builder) {
-        this.restTemplate = builder.build();
-    }
 
     @Override
     @Scheduled(fixedDelay = 60000)
