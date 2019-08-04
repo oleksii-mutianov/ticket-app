@@ -2,21 +2,15 @@ package ua.alxmute.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.support.TransactionTemplate;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 import ua.alxmute.data.access.domain.Route;
+import ua.alxmute.data.access.repository.RouteRepository;
 import ua.alxmute.dto.RouteCreateDto;
 import ua.alxmute.dto.RouteDto;
 import ua.alxmute.exceptions.EntityNotFoundException;
-import ua.alxmute.data.access.repository.RouteRepository;
 import ua.alxmute.service.RouteService;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 

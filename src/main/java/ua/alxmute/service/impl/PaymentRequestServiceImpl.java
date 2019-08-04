@@ -8,12 +8,12 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.alxmute.data.access.domain.PaymentRequest;
 import ua.alxmute.data.access.domain.Route;
 import ua.alxmute.data.access.domain.enums.PaymentStatus;
+import ua.alxmute.data.access.repository.PaymentRequestRepository;
+import ua.alxmute.data.access.repository.RouteRepository;
 import ua.alxmute.dto.PaymentRequestCreateDto;
 import ua.alxmute.dto.PaymentRequestDto;
 import ua.alxmute.dto.PaymentRequestIdDto;
 import ua.alxmute.exceptions.EntityNotFoundException;
-import ua.alxmute.data.access.repository.PaymentRequestRepository;
-import ua.alxmute.data.access.repository.RouteRepository;
 import ua.alxmute.service.PaymentRequestService;
 
 import java.util.List;
@@ -59,6 +59,21 @@ public class PaymentRequestServiceImpl implements PaymentRequestService {
         log.debug("{} was saved", savedPaymentRequest);
 
         return new PaymentRequestIdDto(savedPaymentRequest.getId());
+    }
+
+    @Override
+    @Transactional
+    public PaymentRequestDto updatePaymentStatus(Long id, PaymentStatus paymentStatus) {
+
+        PaymentRequest paymentRequest = paymentRequestRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Payment Request not found"));
+
+        paymentRequest.setPaymentStatus(paymentStatus);
+        PaymentRequest savedPaymentRequest = paymentRequestRepository.save(paymentRequest);
+        log.debug("{} changed status from {} to {}",
+                paymentRequest, paymentRequest.getPaymentStatus(), savedPaymentRequest.getPaymentStatus());
+
+        return conversionService.convert(savedPaymentRequest, PaymentRequestDto.class);
     }
 
     @Override

@@ -123,3 +123,158 @@ databaseChangeLog:
               - column:
                   name: arrival_city
                   value: London
+
+  - changeSet:
+      id: populate_payment_requests_table
+      author: Oleksii Mutianov
+      changes:
+        - insert:
+            tableName: payment_requests
+            columns:
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: route_id
+                  value: 1
+              - column:
+                  name: departure_time
+                  value: '2019-11-11 11:11:11'
+              - column:
+                  name: payment_status
+                  value: IN_PROGRESS
+        - insert:
+            tableName: payment_requests
+            columns:
+              - column:
+                  name: id
+                  value: 2
+              - column:
+                  name: route_id
+                  value: 2
+              - column:
+                  name: departure_time
+                  value: '2019-11-11 11:11:11'
+              - column:
+                  name: payment_status
+                  value: IN_PROGRESS
+        - insert:
+            tableName: payment_requests
+            columns:
+              - column:
+                  name: id
+                  value: 3
+              - column:
+                  name: route_id
+                  value: 3
+              - column:
+                  name: departure_time
+                  value: '2019-11-11 11:11:11'
+              - column:
+                  name: payment_status
+                  value: IN_PROGRESS
+        - insert:
+            tableName: payment_requests
+            columns:
+              - column:
+                  name: id
+                  value: 4
+              - column:
+                  name: route_id
+                  value: 4
+              - column:
+                  name: departure_time
+                  value: '2019-11-11 11:11:11'
+              - column:
+                  name: payment_status
+                  value: IN_PROGRESS
+        - insert:
+            tableName: payment_requests
+            columns:
+              - column:
+                  name: id
+                  value: 5
+              - column:
+                  name: route_id
+                  value: 5
+              - column:
+                  name: departure_time
+                  value: '2019-11-11 11:11:11'
+              - column:
+                  name: payment_status
+                  value: IN_PROGRESS
+        - insert:
+            tableName: payment_requests
+            columns:
+              - column:
+                  name: id
+                  value: 6
+              - column:
+                  name: route_id
+                  value: 6
+              - column:
+                  name: departure_time
+                  value: '2019-11-11 11:11:11'
+              - column:
+                  name: payment_status
+                  value: IN_PROGRESS
+        - insert:
+            tableName: payment_requests
+            columns:
+              - column:
+                  name: id
+                  value: 7
+              - column:
+                  name: route_id
+                  value: 7
+              - column:
+                  name: departure_time
+                  value: '2019-11-11 11:11:11'
+              - column:
+                  name: payment_status
+                  value: IN_PROGRESS
+        - insert:
+            tableName: payment_requests
+            columns:
+              - column:
+                  name: id
+                  value: 8
+              - column:
+                  name: route_id
+                  value: 8
+              - column:
+                  name: departure_time
+                  value: '2019-11-11 11:11:11'
+              - column:
+                  name: payment_status
+                  value: IN_PROGRESS
+        - insert:
+            tableName: payment_requests
+            columns:
+              - column:
+                  name: id
+                  value: 9
+              - column:
+                  name: route_id
+                  value: 9
+              - column:
+                  name: departure_time
+                  value: '2019-11-11 11:11:11'
+              - column:
+                  name: payment_status
+                  value: IN_PROGRESS
+        - insert:
+            tableName: payment_requests
+            columns:
+              - column:
+                  name: id
+                  value: 10
+              - column:
+                  name: route_id
+                  value: 10
+              - column:
+                  name: departure_time
+                  value: '2019-11-11 11:11:11'
+              - column:
+                  name: payment_status
+                  value: IN_PROGRESS

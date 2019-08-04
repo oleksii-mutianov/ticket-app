@@ -15,6 +15,8 @@ public interface PaymentRequestService {
 
     PaymentRequestIdDto save(PaymentRequestCreateDto paymentRequest);
 
+    PaymentRequestDto updatePaymentStatus(Long id, PaymentStatus paymentStatus);
+
     PaymentStatus getStatusById(Long id);
 
 }
