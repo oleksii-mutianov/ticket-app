@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class ExceptionHandlerController {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErrorDetails> invalidTestHandler(EntityNotFoundException ex) {
+    public ResponseEntity<ErrorDetails> entityNotFoundHandler(EntityNotFoundException ex) {
         log.warn("An exception occurred!", ex);
         HttpStatus notFound = HttpStatus.NOT_FOUND;
         return new ResponseEntity<>(new ErrorDetails(LocalDateTime.now(), ex.getMessage(), notFound.value(), notFound.name()), notFound);
