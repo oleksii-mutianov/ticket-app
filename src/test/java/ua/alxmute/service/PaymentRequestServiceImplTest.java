@@ -12,9 +12,9 @@ import ua.alxmute.data.access.repository.PaymentRequestRepository;
 import ua.alxmute.data.access.repository.RouteRepository;
 import ua.alxmute.dto.PaymentRequestCreateDto;
 import ua.alxmute.dto.PaymentRequestDto;
-import ua.alxmute.exceptions.EntityNotFoundException;
 import ua.alxmute.service.impl.PaymentRequestServiceImpl;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;

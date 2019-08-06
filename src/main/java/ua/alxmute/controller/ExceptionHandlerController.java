@@ -6,9 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
-import ua.alxmute.exceptions.EntityNotFoundException;
 import ua.alxmute.exceptions.ErrorDetails;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 
 @ControllerAdvice

@@ -9,9 +9,9 @@ import ua.alxmute.data.access.domain.Route;
 import ua.alxmute.data.access.repository.RouteRepository;
 import ua.alxmute.dto.RouteCreateDto;
 import ua.alxmute.dto.RouteDto;
-import ua.alxmute.exceptions.EntityNotFoundException;
 import ua.alxmute.service.impl.RouteServiceImpl;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
