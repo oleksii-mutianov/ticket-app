@@ -1,6 +1,6 @@
 package ua.alxmute.service;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ua.alxmute.config.AbstractIntegrationTest;
 import ua.alxmute.data.access.domain.PaymentRequest;
@@ -13,8 +13,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PaymentRequestServiceIT extends AbstractIntegrationTest {
 
@@ -49,12 +50,10 @@ public class PaymentRequestServiceIT extends AbstractIntegrationTest {
         assertEquals(paymentRequestDto, actualPaymentRequestDto);
     }
 
-    @Test(expected = EntityNotFoundException.class)
+    @Test
     public void shouldThrowEntityNotFoundExceptionWhenPaymentRequestNotFound() {
-        // WHEN
-        paymentRequestService.findById(100000L);
-
-        // THEN throw EntityNotFoundException
+        // WHEN THEN
+        assertThrows(EntityNotFoundException.class, () -> paymentRequestService.findById(100000L));
     }
 
     @Test

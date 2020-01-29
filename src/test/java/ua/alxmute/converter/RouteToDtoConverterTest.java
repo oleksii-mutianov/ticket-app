@@ -1,16 +1,16 @@
 package ua.alxmute.converter;
 
-import org.junit.Test;
-import org.mockito.InjectMocks;
+import org.junit.jupiter.api.Test;
+import org.mockito.Spy;
 import ua.alxmute.config.AbstractUnitTest;
 import ua.alxmute.data.access.domain.Route;
 import ua.alxmute.dto.RouteDto;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RouteToDtoConverterTest extends AbstractUnitTest {
 
-    @InjectMocks
+    @Spy
     private RouteToDtoConverter routeToDtoConverter;
 
     @Test

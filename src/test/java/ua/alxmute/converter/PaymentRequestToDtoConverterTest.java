@@ -1,13 +1,13 @@
 package ua.alxmute.converter;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ua.alxmute.config.AbstractUnitTest;
 import ua.alxmute.data.access.domain.PaymentRequest;
 import ua.alxmute.dto.PaymentRequestDto;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 

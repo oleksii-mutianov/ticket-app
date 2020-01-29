@@ -1,10 +1,14 @@
 package ua.alxmute.service;
 
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.core.convert.ConversionService;
+import org.mockito.Spy;
+import org.springframework.core.convert.support.GenericConversionService;
 import ua.alxmute.config.AbstractUnitTest;
+import ua.alxmute.converter.CreateDtoToRouteConverter;
+import ua.alxmute.converter.RouteToDtoConverter;
 import ua.alxmute.data.access.domain.Route;
 import ua.alxmute.data.access.repository.RouteRepository;
 import ua.alxmute.dto.RouteCreateDto;
@@ -17,21 +21,28 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class RouteServiceImplTest extends AbstractUnitTest {
 
-    @Mock
-    private ConversionService conversionService;
+    @Spy
+    private GenericConversionService conversionService;
 
     @Mock
     private RouteRepository routeRepository;
 
     @InjectMocks
     private RouteServiceImpl routeService;
+
+    @BeforeEach
+    void setup() {
+        conversionService.addConverter(new RouteToDtoConverter());
+        conversionService.addConverter(new CreateDtoToRouteConverter());
+    }
 
     @Test
     public void shouldFindRouteById() {
@@ -40,7 +51,6 @@ public class RouteServiceImplTest extends AbstractUnitTest {
         Optional<Route> optionalRoute = mockOptionalRoute(route);
         RouteDto routeDto = mockRouteDto(route);
         when(routeRepository.findById(1L)).thenReturn(optionalRoute);
-        when(conversionService.convert(route, RouteDto.class)).thenReturn(routeDto);
 
         // WHEN
         RouteDto actualRouteDto = routeService.findById(route.getId());
@@ -50,12 +60,10 @@ public class RouteServiceImplTest extends AbstractUnitTest {
         verify(routeRepository, times(1)).findById(route.getId());
     }
 
-    @Test(expected = EntityNotFoundException.class)
+    @Test
     public void shouldThrowEntityNotFoundExceptionWhenRouteNotFound() {
-        // WHEN
-        routeService.findById(2L);
-
-        // THEN
+        // WHEN THEN
+        assertThrows(EntityNotFoundException.class, () -> routeService.findById(2L));
         verify(routeRepository, times(1)).findById(2L);
     }
 
@@ -65,7 +73,6 @@ public class RouteServiceImplTest extends AbstractUnitTest {
         Route route = mockRoute();
         RouteDto routeDto = mockRouteDto(route);
         List<Route> routes = Collections.singletonList(route);
-        when(conversionService.convert(route, RouteDto.class)).thenReturn(routeDto);
         when(routeRepository.findAll()).thenReturn(routes);
 
         // WHEN
@@ -96,7 +103,6 @@ public class RouteServiceImplTest extends AbstractUnitTest {
         Route route = mockRoute();
         route.setId(null);
         RouteCreateDto routeCreateDto = mockRouteCreateDto(route);
-        when(conversionService.convert(routeCreateDto, Route.class)).thenReturn(route);
 
         // WHEN
         routeService.save(routeCreateDto);

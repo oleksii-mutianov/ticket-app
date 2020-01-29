@@ -1,10 +1,9 @@
 package ua.alxmute.config;
 
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import ua.alxmute.data.access.domain.PaymentRequest;
 import ua.alxmute.data.access.domain.Route;
@@ -15,18 +14,16 @@ import ua.alxmute.dto.RouteCreateDto;
 import ua.alxmute.dto.RouteDto;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = {
-        H2TestProfileJPAConfig.class,
-        GeneralTestConfig.class
-})
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
 @ActiveProfiles("test")
 @Transactional
 public abstract class AbstractIntegrationTest {
 
-    @Autowired
+    @PersistenceContext
     private EntityManager entityManager;
 
     public Route mockRoute() {
