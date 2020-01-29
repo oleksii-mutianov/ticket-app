@@ -1,6 +1,6 @@
 package ua.alxmute.service;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ua.alxmute.config.AbstractIntegrationTest;
 import ua.alxmute.data.access.domain.Route;
@@ -11,8 +11,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class RouteServiceIT extends AbstractIntegrationTest {
 
@@ -35,12 +36,10 @@ public class RouteServiceIT extends AbstractIntegrationTest {
         assertEquals(expectedRouteDto, actualRouteDto);
     }
 
-    @Test(expected = EntityNotFoundException.class)
+    @Test
     public void shouldThrowEntityNotFoundExceptionWhenRouteNotFound() {
-        // WHEN
-        routeService.findById(100000L);
-
-        // THEN throw EntityNotFoundException
+        // WHEN THEN
+        assertThrows(EntityNotFoundException.class, () -> routeService.findById(100000L));
     }
 
     @Test

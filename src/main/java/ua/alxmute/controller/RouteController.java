@@ -33,7 +33,7 @@ public class RouteController {
         return new ResponseEntity<>(routeService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<RouteDto> findById(@PathVariable("id") Long id) {
         return new ResponseEntity<>(routeService.findById(id), HttpStatus.OK);
     }

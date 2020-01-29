@@ -1,7 +1,7 @@
 package ua.alxmute.config;
 
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ua.alxmute.data.access.domain.PaymentRequest;
 import ua.alxmute.data.access.domain.Route;
 import ua.alxmute.data.access.domain.enums.PaymentStatus;
@@ -13,7 +13,7 @@ import ua.alxmute.dto.RouteDto;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public abstract class AbstractUnitTest {
 
     public Route mockRoute() {

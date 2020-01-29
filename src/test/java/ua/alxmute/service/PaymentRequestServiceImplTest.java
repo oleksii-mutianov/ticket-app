@@ -1,10 +1,14 @@
 package ua.alxmute.service;
 
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.core.convert.ConversionService;
+import org.mockito.Spy;
+import org.springframework.core.convert.support.GenericConversionService;
 import ua.alxmute.config.AbstractUnitTest;
+import ua.alxmute.converter.PaymentRequestToDtoConverter;
+import ua.alxmute.converter.RouteToDtoConverter;
 import ua.alxmute.data.access.domain.PaymentRequest;
 import ua.alxmute.data.access.domain.Route;
 import ua.alxmute.data.access.domain.enums.PaymentStatus;
@@ -20,7 +24,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -28,8 +33,8 @@ import static org.mockito.Mockito.when;
 
 public class PaymentRequestServiceImplTest extends AbstractUnitTest {
 
-    @Mock
-    private ConversionService conversionService;
+    @Spy
+    private GenericConversionService conversionService;
 
     @Mock
     private PaymentRequestRepository paymentRequestRepository;
@@ -40,14 +45,17 @@ public class PaymentRequestServiceImplTest extends AbstractUnitTest {
     @InjectMocks
     private PaymentRequestServiceImpl paymentRequestService;
 
+    @BeforeEach
+    void setup() {
+        conversionService.addConverter(new PaymentRequestToDtoConverter(new RouteToDtoConverter()));
+    }
+
     @Test
     public void shouldFindPaymentStatusById() {
         // GIVEN
         PaymentRequest paymentRequest = mockPaymentRequest();
-        PaymentRequestDto paymentRequestDto = mockPaymentRequestDto(paymentRequest);
         Optional<PaymentRequest> optionalPaymentRequest = mockOptionalPaymentRequest(paymentRequest);
         when(paymentRequestRepository.findById(1L)).thenReturn(optionalPaymentRequest);
-        when(conversionService.convert(paymentRequest, PaymentRequestDto.class)).thenReturn(paymentRequestDto);
 
         // WHEN
         PaymentStatus actualStatus = paymentRequestService.getStatusById(paymentRequest.getId());
@@ -64,7 +72,6 @@ public class PaymentRequestServiceImplTest extends AbstractUnitTest {
         PaymentRequestDto paymentRequestDto = mockPaymentRequestDto(paymentRequest);
         Optional<PaymentRequest> optionalPaymentRequest = mockOptionalPaymentRequest(paymentRequest);
         when(paymentRequestRepository.findById(1L)).thenReturn(optionalPaymentRequest);
-        when(conversionService.convert(paymentRequest, PaymentRequestDto.class)).thenReturn(paymentRequestDto);
 
         // WHEN
         PaymentRequestDto actualPaymentRequestDto = paymentRequestService.findById(paymentRequest.getId());
@@ -74,12 +81,10 @@ public class PaymentRequestServiceImplTest extends AbstractUnitTest {
         verify(paymentRequestRepository, times(1)).findById(paymentRequest.getId());
     }
 
-    @Test(expected = EntityNotFoundException.class)
+    @Test
     public void shouldThrowEntityNotFoundExceptionWhenPaymentRequestNotFound() {
-        // WHEN
-        paymentRequestService.findById(2L);
-
-        // THEN
+        // WHEN THEN
+        assertThrows(EntityNotFoundException.class, () -> paymentRequestService.findById(2L));
         verify(paymentRequestRepository, times(1)).findById(2L);
     }
 
@@ -105,7 +110,6 @@ public class PaymentRequestServiceImplTest extends AbstractUnitTest {
         PaymentRequest paymentRequest = mockPaymentRequest();
         PaymentRequestDto paymentRequestDto = mockPaymentRequestDto(paymentRequest);
         List<PaymentRequest> paymentRequests = Collections.singletonList(paymentRequest);
-        when(conversionService.convert(paymentRequest, PaymentRequestDto.class)).thenReturn(paymentRequestDto);
         when(paymentRequestRepository.findAll()).thenReturn(paymentRequests);
 
         // WHEN
@@ -137,7 +141,6 @@ public class PaymentRequestServiceImplTest extends AbstractUnitTest {
         paymentRequest.setPaymentStatus(PaymentStatus.SUCCESSFUL);
         PaymentRequestDto paymentRequestDto = mockPaymentRequestDto(paymentRequest);
         Optional<PaymentRequest> optionalPaymentRequest = mockOptionalPaymentRequest(paymentRequest);
-        when(conversionService.convert(paymentRequest, PaymentRequestDto.class)).thenReturn(paymentRequestDto);
         when(paymentRequestRepository.findById(1L)).thenReturn(optionalPaymentRequest);
         when(paymentRequestRepository.save(any())).thenReturn(paymentRequest);
 

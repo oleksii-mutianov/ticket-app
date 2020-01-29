@@ -12,6 +12,7 @@ import ua.alxmute.data.access.domain.enums.PaymentStatus;
 import ua.alxmute.service.PaymentRequestClientService;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 @Service
 @Slf4j
@@ -26,8 +27,7 @@ public class PaymentRequestClientServiceImpl implements PaymentRequestClientServ
     public void processPaymentRequest() {
         PaymentRequest paymentRequest = getSuitableRequest();
         if (paymentRequest != null) {
-            restTemplate.put(API_BASE_URL + "/payments/" + paymentRequest.getId(),
-                    getStatus());
+            restTemplate.put(API_BASE_URL + "/payments/" + paymentRequest.getId(), getStatus());
         } else {
             log.info("No requests to process");
         }
@@ -38,11 +38,15 @@ public class PaymentRequestClientServiceImpl implements PaymentRequestClientServ
         if (paymentRequests != null && !paymentRequests.isEmpty()) {
             return paymentRequests
                     .stream()
-                    .filter(paymentRequest -> paymentRequest.getPaymentStatus().equals(PaymentStatus.IN_PROGRESS))
+                    .filter(isRequestWaitingForProcessing())
                     .findFirst()
                     .orElse(null);
         }
         return null;
+    }
+
+    private Predicate<PaymentRequest> isRequestWaitingForProcessing() {
+        return paymentRequest -> paymentRequest.getPaymentStatus().equals(PaymentStatus.IN_PROGRESS);
     }
 
     private List<PaymentRequest> getPaymentRequests() {
