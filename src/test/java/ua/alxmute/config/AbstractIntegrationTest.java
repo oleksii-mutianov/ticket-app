@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.alxmute.data.access.domain.PaymentRequest;
 import ua.alxmute.data.access.domain.Route;
 import ua.alxmute.data.access.domain.enums.PaymentStatus;
-import ua.alxmute.dto.PaymentRequestCreateDto;
-import ua.alxmute.dto.PaymentRequestDto;
+import ua.alxmute.dto.PaymentCreateDto;
+import ua.alxmute.dto.PaymentResponseDto;
 import ua.alxmute.dto.RouteCreateDto;
 import ua.alxmute.dto.RouteDto;
 
@@ -81,8 +81,8 @@ public abstract class AbstractIntegrationTest {
                 .build();
     }
 
-    public PaymentRequestDto getPaymentRequestDto(PaymentRequest paymentRequest) {
-        return PaymentRequestDto.builder()
+    public PaymentResponseDto getPaymentRequestDto(PaymentRequest paymentRequest) {
+        return PaymentResponseDto.builder()
                 .id(paymentRequest.getId())
                 .route(getRouteDto(paymentRequest.getRoute()))
                 .paymentStatus(paymentRequest.getPaymentStatus())
@@ -90,7 +90,7 @@ public abstract class AbstractIntegrationTest {
                 .build();
     }
 
-    public PaymentRequestCreateDto mockPaymentRequestCreateDto(PaymentRequest paymentRequest) {
-        return new PaymentRequestCreateDto(paymentRequest.getRoute().getId(), paymentRequest.getDepartureTime());
+    public PaymentCreateDto mockPaymentRequestCreateDto(PaymentRequest paymentRequest) {
+        return new PaymentCreateDto(paymentRequest.getRoute().getId(), paymentRequest.getDepartureTime());
     }
 }

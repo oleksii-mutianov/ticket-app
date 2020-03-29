@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class PaymentRequestIdDto {
+public class PaymentResponseIdDto {
 
     private Long paymentRequestId;
 

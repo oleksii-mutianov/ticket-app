@@ -5,7 +5,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ua.alxmute.config.AbstractUnitTest;
 import ua.alxmute.data.access.domain.PaymentRequest;
-import ua.alxmute.dto.PaymentRequestDto;
+import ua.alxmute.dto.PaymentResponseDto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -24,12 +24,12 @@ public class PaymentRequestToDtoConverterTest extends AbstractUnitTest {
         // GIVEN
         when(routeToDtoConverter.convert(any())).thenReturn(mockRouteDto());
         PaymentRequest paymentRequest = mockPaymentRequest();
-        PaymentRequestDto dto = mockPaymentRequestDto(paymentRequest);
+        PaymentResponseDto dto = mockPaymentRequestDto(paymentRequest);
 
         // WHEN
-        PaymentRequestDto actualPaymentRequestDto = paymentRequestToDtoConverter.convert(paymentRequest);
+        PaymentResponseDto actualPaymentResponseDto = paymentRequestToDtoConverter.convert(paymentRequest);
 
         // THEN
-        assertEquals(dto, actualPaymentRequestDto);
+        assertEquals(dto, actualPaymentResponseDto);
     }
 }

@@ -14,8 +14,8 @@ import ua.alxmute.data.access.domain.Route;
 import ua.alxmute.data.access.domain.enums.PaymentStatus;
 import ua.alxmute.data.access.repository.PaymentRequestRepository;
 import ua.alxmute.data.access.repository.RouteRepository;
-import ua.alxmute.dto.PaymentRequestCreateDto;
-import ua.alxmute.dto.PaymentRequestDto;
+import ua.alxmute.dto.PaymentCreateDto;
+import ua.alxmute.dto.PaymentResponseDto;
 import ua.alxmute.service.impl.PaymentRequestServiceImpl;
 
 import javax.persistence.EntityNotFoundException;
@@ -35,13 +35,10 @@ public class PaymentRequestServiceImplTest extends AbstractUnitTest {
 
     @Spy
     private GenericConversionService conversionService;
-
     @Mock
     private PaymentRequestRepository paymentRequestRepository;
-
     @Mock
     private RouteRepository routeRepository;
-
     @InjectMocks
     private PaymentRequestServiceImpl paymentRequestService;
 
@@ -69,15 +66,15 @@ public class PaymentRequestServiceImplTest extends AbstractUnitTest {
     public void shouldFindPaymentRequestById() {
         // GIVEN
         PaymentRequest paymentRequest = mockPaymentRequest();
-        PaymentRequestDto paymentRequestDto = mockPaymentRequestDto(paymentRequest);
+        PaymentResponseDto paymentResponseDto = mockPaymentRequestDto(paymentRequest);
         Optional<PaymentRequest> optionalPaymentRequest = mockOptionalPaymentRequest(paymentRequest);
         when(paymentRequestRepository.findById(1L)).thenReturn(optionalPaymentRequest);
 
         // WHEN
-        PaymentRequestDto actualPaymentRequestDto = paymentRequestService.findById(paymentRequest.getId());
+        PaymentResponseDto actualPaymentResponseDto = paymentRequestService.findById(paymentRequest.getId());
 
         // THEN
-        assertEquals(paymentRequestDto, actualPaymentRequestDto);
+        assertEquals(paymentResponseDto, actualPaymentResponseDto);
         verify(paymentRequestRepository, times(1)).findById(paymentRequest.getId());
     }
 
@@ -93,12 +90,12 @@ public class PaymentRequestServiceImplTest extends AbstractUnitTest {
         // GIVEN
         PaymentRequest paymentRequest = mockPaymentRequest();
         Optional<Route> optionalRoute = mockOptionalRoute(paymentRequest.getRoute());
-        PaymentRequestCreateDto paymentRequestCreateDto = mockPaymentRequestCreateDto(paymentRequest);
+        PaymentCreateDto paymentCreateDto = mockPaymentRequestCreateDto(paymentRequest);
         when(routeRepository.findById(1L)).thenReturn(optionalRoute);
         when(paymentRequestRepository.save(any())).thenReturn(paymentRequest);
 
         // WHEN
-        paymentRequestService.save(paymentRequestCreateDto);
+        paymentRequestService.save(paymentCreateDto);
 
         // THEN
         verify(paymentRequestRepository, times(1)).save(any());
@@ -108,16 +105,16 @@ public class PaymentRequestServiceImplTest extends AbstractUnitTest {
     public void shouldFindAllPaymentRequests() {
         // GIVEN
         PaymentRequest paymentRequest = mockPaymentRequest();
-        PaymentRequestDto paymentRequestDto = mockPaymentRequestDto(paymentRequest);
+        PaymentResponseDto paymentResponseDto = mockPaymentRequestDto(paymentRequest);
         List<PaymentRequest> paymentRequests = Collections.singletonList(paymentRequest);
         when(paymentRequestRepository.findAll()).thenReturn(paymentRequests);
 
         // WHEN
-        List<PaymentRequestDto> paymentRequestDtos = paymentRequestService.findAll();
+        List<PaymentResponseDto> paymentResponseDtos = paymentRequestService.findAll();
 
         // THEN
-        assertThat(paymentRequestDtos).hasSize(paymentRequests.size());
-        assertEquals(paymentRequestDto, paymentRequestDtos.get(0));
+        assertThat(paymentResponseDtos).hasSize(paymentRequests.size());
+        assertEquals(paymentResponseDto, paymentResponseDtos.get(0));
         verify(paymentRequestRepository, times(1)).findAll();
     }
 
@@ -127,10 +124,10 @@ public class PaymentRequestServiceImplTest extends AbstractUnitTest {
         when(paymentRequestRepository.findAll()).thenReturn(Collections.emptyList());
 
         // WHEN
-        List<PaymentRequestDto> paymentRequestDtos = paymentRequestService.findAll();
+        List<PaymentResponseDto> paymentResponseDtos = paymentRequestService.findAll();
 
         // THEN
-        assertThat(paymentRequestDtos).isEmpty();
+        assertThat(paymentResponseDtos).isEmpty();
         verify(paymentRequestRepository, times(1)).findAll();
     }
 
@@ -139,16 +136,16 @@ public class PaymentRequestServiceImplTest extends AbstractUnitTest {
         // GIVEN
         PaymentRequest paymentRequest = mockPaymentRequest();
         paymentRequest.setPaymentStatus(PaymentStatus.SUCCESSFUL);
-        PaymentRequestDto paymentRequestDto = mockPaymentRequestDto(paymentRequest);
-        Optional<PaymentRequest> optionalPaymentRequest = mockOptionalPaymentRequest(paymentRequest);
+        PaymentResponseDto paymentResponseDto = mockPaymentRequestDto(paymentRequest);
+        var optionalPaymentRequest = mockOptionalPaymentRequest(paymentRequest);
         when(paymentRequestRepository.findById(1L)).thenReturn(optionalPaymentRequest);
         when(paymentRequestRepository.save(any())).thenReturn(paymentRequest);
 
         // WHEN
-        PaymentRequestDto actualPaymentRequestDto = paymentRequestService.updatePaymentStatus(paymentRequest.getId(), PaymentStatus.SUCCESSFUL);
+        PaymentResponseDto actualPaymentResponseDto = paymentRequestService.updatePaymentStatus(paymentRequest.getId(), PaymentStatus.SUCCESSFUL);
 
         // THEN
-        assertEquals(paymentRequestDto, actualPaymentRequestDto);
+        assertEquals(paymentResponseDto, actualPaymentResponseDto);
         verify(paymentRequestRepository, times(1)).findById(paymentRequest.getId());
         verify(paymentRequestRepository, times(1)).save(paymentRequest);
     }

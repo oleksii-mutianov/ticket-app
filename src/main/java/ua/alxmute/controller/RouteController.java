@@ -1,7 +1,7 @@
 package ua.alxmute.controller;
 
-import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,27 +14,30 @@ import ua.alxmute.dto.RouteDto;
 import ua.alxmute.service.RouteService;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("routes")
 public class RouteController {
 
-    private RouteService routeService;
+    private final RouteService routeService;
 
     @PostMapping
+    @SneakyThrows
     public ResponseEntity<RouteDto> save(@RequestBody @Valid RouteCreateDto route) {
-        return new ResponseEntity<>(routeService.save(route), HttpStatus.CREATED);
+        RouteDto savedRoute = routeService.save(route);
+        return ResponseEntity.created(new URI(savedRoute.toString())).body(savedRoute);
     }
 
     @GetMapping
     public ResponseEntity<List<RouteDto>> findAll() {
-        return new ResponseEntity<>(routeService.findAll(), HttpStatus.OK);
+        return ResponseEntity.ok(routeService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<RouteDto> findById(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(routeService.findById(id), HttpStatus.OK);
+        return ResponseEntity.ok(routeService.findById(id));
     }
 }

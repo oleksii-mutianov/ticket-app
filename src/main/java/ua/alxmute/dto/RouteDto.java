@@ -8,9 +8,7 @@ import lombok.Data;
 public class RouteDto {
 
     private Long id;
-
     private String arrivalCity;
-
     private String departureCity;
 
 }

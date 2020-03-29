@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentRequestCreateDto {
+public class PaymentCreateDto {
 
     @NotNull
     @Min(0)

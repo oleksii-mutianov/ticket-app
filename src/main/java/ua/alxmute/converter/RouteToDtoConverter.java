@@ -7,15 +7,12 @@ import ua.alxmute.dto.RouteDto;
 
 @Component
 public class RouteToDtoConverter implements Converter<Route, RouteDto> {
-
     @Override
     public RouteDto convert(Route source) {
-
         return RouteDto.builder()
                 .id(source.getId())
                 .arrivalCity(source.getArrivalCity())
                 .departureCity(source.getDepartureCity())
                 .build();
-
     }
 }

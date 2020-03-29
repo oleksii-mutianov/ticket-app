@@ -8,14 +8,11 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class PaymentRequestDto {
+public class PaymentResponseDto {
 
     private Long id;
-
     private RouteDto route;
-
     private LocalDateTime departureTime;
-
     private PaymentStatus paymentStatus;
 
 }
