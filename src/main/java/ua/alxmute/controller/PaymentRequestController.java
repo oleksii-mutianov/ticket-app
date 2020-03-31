@@ -1,7 +1,7 @@
 package ua.alxmute.controller;
 
-import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,44 +11,46 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ua.alxmute.data.access.domain.enums.PaymentStatus;
-import ua.alxmute.dto.PaymentRequestCreateDto;
-import ua.alxmute.dto.PaymentRequestDto;
-import ua.alxmute.dto.PaymentRequestIdDto;
+import ua.alxmute.dto.PaymentCreateDto;
+import ua.alxmute.dto.PaymentResponseDto;
 import ua.alxmute.service.PaymentRequestService;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.net.URI;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("payments")
 public class PaymentRequestController {
 
-    private PaymentRequestService paymentRequestService;
+    private final PaymentRequestService paymentRequestService;
 
     @PostMapping
-    public ResponseEntity<PaymentRequestIdDto> createPaymentRequest(@RequestBody @Valid PaymentRequestCreateDto paymentRequest) {
-        return new ResponseEntity<>(paymentRequestService.save(paymentRequest), HttpStatus.CREATED);
+    @SneakyThrows
+    public ResponseEntity<?> createPaymentRequest(@RequestBody @Valid PaymentCreateDto paymentRequest) {
+        var savedPaymentRequest = paymentRequestService.save(paymentRequest);
+        URI location = new URI(savedPaymentRequest.getPaymentRequestId().toString());
+        return ResponseEntity.created(location).body(savedPaymentRequest);
     }
 
     @GetMapping
-    public ResponseEntity<List<PaymentRequestDto>> findAll() {
-        return new ResponseEntity<>(paymentRequestService.findAll(), HttpStatus.OK);
+    public ResponseEntity<?> findAll() {
+        return ResponseEntity.ok(paymentRequestService.findAll());
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<PaymentRequestDto> findById(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(paymentRequestService.findById(id), HttpStatus.OK);
+    public ResponseEntity<PaymentResponseDto> findById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(paymentRequestService.findById(id));
     }
 
     @GetMapping("{id}/status")
     public ResponseEntity<PaymentStatus> getStatus(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(paymentRequestService.getStatusById(id), HttpStatus.OK);
+        return ResponseEntity.ok(paymentRequestService.getStatusById(id));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<PaymentRequestDto> updateStatus(@PathVariable("id") Long id, @RequestBody PaymentStatus paymentStatus) {
-        return new ResponseEntity<>(paymentRequestService.updatePaymentStatus(id, paymentStatus), HttpStatus.OK);
+    public ResponseEntity<PaymentResponseDto> updateStatus(@PathVariable("id") Long id, @RequestBody PaymentStatus paymentStatus) {
+        return ResponseEntity.ok(paymentRequestService.updatePaymentStatus(id, paymentStatus));
     }
 
 }

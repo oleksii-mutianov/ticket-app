@@ -1,21 +1,21 @@
 package ua.alxmute.service;
 
 import ua.alxmute.data.access.domain.enums.PaymentStatus;
-import ua.alxmute.dto.PaymentRequestCreateDto;
-import ua.alxmute.dto.PaymentRequestDto;
-import ua.alxmute.dto.PaymentRequestIdDto;
+import ua.alxmute.dto.PaymentCreateDto;
+import ua.alxmute.dto.PaymentResponseDto;
+import ua.alxmute.dto.PaymentResponseIdDto;
 
 import java.util.List;
 
 public interface PaymentRequestService {
 
-    PaymentRequestDto findById(Long id);
+    PaymentResponseDto findById(Long id);
 
-    List<PaymentRequestDto> findAll();
+    List<PaymentResponseDto> findAll();
 
-    PaymentRequestIdDto save(PaymentRequestCreateDto paymentRequest);
+    PaymentResponseIdDto save(PaymentCreateDto paymentRequest);
 
-    PaymentRequestDto updatePaymentStatus(Long id, PaymentStatus paymentStatus);
+    PaymentResponseDto updatePaymentStatus(Long id, PaymentStatus paymentStatus);
 
     PaymentStatus getStatusById(Long id);
 

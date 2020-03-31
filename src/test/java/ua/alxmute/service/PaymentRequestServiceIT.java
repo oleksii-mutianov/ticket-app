@@ -5,9 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ua.alxmute.config.AbstractIntegrationTest;
 import ua.alxmute.data.access.domain.PaymentRequest;
 import ua.alxmute.data.access.domain.enums.PaymentStatus;
-import ua.alxmute.dto.PaymentRequestCreateDto;
-import ua.alxmute.dto.PaymentRequestDto;
-import ua.alxmute.dto.PaymentRequestIdDto;
+import ua.alxmute.dto.PaymentCreateDto;
+import ua.alxmute.dto.PaymentResponseDto;
+import ua.alxmute.dto.PaymentResponseIdDto;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
@@ -41,13 +41,13 @@ public class PaymentRequestServiceIT extends AbstractIntegrationTest {
     public void shouldFindPaymentRequestById() {
         // GIVEN
         PaymentRequest paymentRequest = getPaymentRequest();
-        PaymentRequestDto paymentRequestDto = getPaymentRequestDto(paymentRequest);
+        PaymentResponseDto paymentResponseDto = getPaymentRequestDto(paymentRequest);
 
         // WHEN
-        PaymentRequestDto actualPaymentRequestDto = paymentRequestService.findById(paymentRequest.getId());
+        PaymentResponseDto actualPaymentResponseDto = paymentRequestService.findById(paymentRequest.getId());
 
         // THEN
-        assertEquals(paymentRequestDto, actualPaymentRequestDto);
+        assertEquals(paymentResponseDto, actualPaymentResponseDto);
     }
 
     @Test
@@ -60,10 +60,10 @@ public class PaymentRequestServiceIT extends AbstractIntegrationTest {
     public void shouldSavePaymentRequest() {
         // GIVEN
         PaymentRequest paymentRequest = mockPaymentRequest();
-        PaymentRequestCreateDto paymentRequestCreateDto = mockPaymentRequestCreateDto(paymentRequest);
+        PaymentCreateDto paymentCreateDto = mockPaymentRequestCreateDto(paymentRequest);
 
         // WHEN
-        PaymentRequestIdDto idDto = paymentRequestService.save(paymentRequestCreateDto);
+        PaymentResponseIdDto idDto = paymentRequestService.save(paymentCreateDto);
         PaymentRequest actualPaymentRequest = entityManager.find(PaymentRequest.class, idDto.getPaymentRequestId());
 
         // THEN
@@ -76,26 +76,26 @@ public class PaymentRequestServiceIT extends AbstractIntegrationTest {
     public void shouldContainCreatedPaymentRequestWhenFindAll() {
         // GIVEN
         PaymentRequest paymentRequest = getPaymentRequest();
-        PaymentRequestDto paymentRequestDto = getPaymentRequestDto(paymentRequest);
+        PaymentResponseDto paymentResponseDto = getPaymentRequestDto(paymentRequest);
 
         // WHEN
-        List<PaymentRequestDto> paymentRequestDtos = paymentRequestService.findAll();
+        List<PaymentResponseDto> paymentResponseDtos = paymentRequestService.findAll();
 
         // THEN
-        assertThat(paymentRequestDtos).contains(paymentRequestDto);
+        assertThat(paymentResponseDtos).contains(paymentResponseDto);
     }
 
     @Test
     public void shouldUpdatePaymentStatus() {
         // GIVEN
         PaymentRequest paymentRequest = getPaymentRequest();
-        PaymentRequestDto expectedPaymentRequestDto = getPaymentRequestDto(paymentRequest);
-        expectedPaymentRequestDto.setPaymentStatus(PaymentStatus.SUCCESSFUL);
+        PaymentResponseDto expectedPaymentResponseDto = getPaymentRequestDto(paymentRequest);
+        expectedPaymentResponseDto.setPaymentStatus(PaymentStatus.SUCCESSFUL);
 
         // WHEN
-        PaymentRequestDto actualPaymentRequestDto = paymentRequestService.updatePaymentStatus(paymentRequest.getId(), PaymentStatus.SUCCESSFUL);
+        PaymentResponseDto actualPaymentResponseDto = paymentRequestService.updatePaymentStatus(paymentRequest.getId(), PaymentStatus.SUCCESSFUL);
 
         // THEN
-        assertEquals(expectedPaymentRequestDto, actualPaymentRequestDto);
+        assertEquals(expectedPaymentResponseDto, actualPaymentResponseDto);
     }
 }

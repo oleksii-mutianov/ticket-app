@@ -1,6 +1,6 @@
 package ua.alxmute.service.impl;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -11,51 +11,42 @@ import ua.alxmute.data.access.domain.PaymentRequest;
 import ua.alxmute.data.access.domain.enums.PaymentStatus;
 import ua.alxmute.service.PaymentRequestClientService;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
 @Service
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PaymentRequestClientServiceImpl implements PaymentRequestClientService {
 
     private static final String API_BASE_URL = "http://localhost:8080/ticket-app/api/v1";
-    private RestTemplate restTemplate;
+
+    private final RestTemplate restTemplate;
 
     @Override
     @Scheduled(fixedDelay = 60000)
     public void processPaymentRequest() {
-        PaymentRequest paymentRequest = getSuitableRequest();
-        if (paymentRequest != null) {
-            restTemplate.put(API_BASE_URL + "/payments/" + paymentRequest.getId(), getStatus());
-        } else {
-            log.info("No requests to process");
-        }
-    }
-
-    private PaymentRequest getSuitableRequest() {
-        List<PaymentRequest> paymentRequests = getPaymentRequests();
-        if (paymentRequests != null && !paymentRequests.isEmpty()) {
-            return paymentRequests
-                    .stream()
-                    .filter(isRequestWaitingForProcessing())
-                    .findFirst()
-                    .orElse(null);
-        }
-        return null;
+        Arrays.stream(getPaymentRequests())
+                .filter(isRequestWaitingForProcessing())
+                .findFirst()
+                .ifPresentOrElse(
+                        paymentRequest -> restTemplate.put(API_BASE_URL + "/payments/" + paymentRequest.getId(), getStatus()),
+                        () -> log.info("No requests to process")
+                );
     }
 
     private Predicate<PaymentRequest> isRequestWaitingForProcessing() {
         return paymentRequest -> paymentRequest.getPaymentStatus().equals(PaymentStatus.IN_PROGRESS);
     }
 
-    private List<PaymentRequest> getPaymentRequests() {
+    private PaymentRequest[] getPaymentRequests() {
         return restTemplate.exchange(
                 API_BASE_URL + "/payments",
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<PaymentRequest>>() {
-                }).getBody();
+                PaymentRequest[].class)
+                .getBody();
     }
 
     private PaymentStatus getStatus() {

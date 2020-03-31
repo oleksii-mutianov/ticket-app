@@ -5,8 +5,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ua.alxmute.data.access.domain.PaymentRequest;
 import ua.alxmute.data.access.domain.Route;
 import ua.alxmute.data.access.domain.enums.PaymentStatus;
-import ua.alxmute.dto.PaymentRequestCreateDto;
-import ua.alxmute.dto.PaymentRequestDto;
+import ua.alxmute.dto.PaymentCreateDto;
+import ua.alxmute.dto.PaymentResponseDto;
 import ua.alxmute.dto.RouteCreateDto;
 import ua.alxmute.dto.RouteDto;
 
@@ -75,8 +75,8 @@ public abstract class AbstractUnitTest {
         return Optional.of(paymentRequest);
     }
 
-    public PaymentRequestDto mockPaymentRequestDto(RouteDto routeDto) {
-        return PaymentRequestDto.builder()
+    public PaymentResponseDto mockPaymentRequestDto(RouteDto routeDto) {
+        return PaymentResponseDto.builder()
                 .id(1L)
                 .route(routeDto)
                 .paymentStatus(PaymentStatus.IN_PROGRESS)
@@ -84,8 +84,8 @@ public abstract class AbstractUnitTest {
                 .build();
     }
 
-    public PaymentRequestDto mockPaymentRequestDto(PaymentRequest paymentRequest) {
-        return PaymentRequestDto.builder()
+    public PaymentResponseDto mockPaymentRequestDto(PaymentRequest paymentRequest) {
+        return PaymentResponseDto.builder()
                 .id(paymentRequest.getId())
                 .route(mockRouteDto())
                 .paymentStatus(paymentRequest.getPaymentStatus())
@@ -93,17 +93,17 @@ public abstract class AbstractUnitTest {
                 .build();
     }
 
-    public PaymentRequestDto mockPaymentRequestDto() {
+    public PaymentResponseDto mockPaymentRequestDto() {
         RouteDto routeDto = mockRouteDto();
         return mockPaymentRequestDto(routeDto);
     }
 
-    public PaymentRequestCreateDto mockPaymentRequestCreateDto() {
+    public PaymentCreateDto mockPaymentRequestCreateDto() {
         PaymentRequest paymentRequest = mockPaymentRequest();
         return mockPaymentRequestCreateDto(paymentRequest);
     }
 
-    public PaymentRequestCreateDto mockPaymentRequestCreateDto(PaymentRequest paymentRequest) {
-        return new PaymentRequestCreateDto(paymentRequest.getId(), paymentRequest.getDepartureTime());
+    public PaymentCreateDto mockPaymentRequestCreateDto(PaymentRequest paymentRequest) {
+        return new PaymentCreateDto(paymentRequest.getId(), paymentRequest.getDepartureTime());
     }
 }
